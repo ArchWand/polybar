@@ -6,7 +6,7 @@ fi
 # If first parameter is empty, default message
 git add .
 if [ -z "$1" ]; then
-	git commit -m "Update dotfiles"
+	git commit -m "Update polybar config"
 else
 	git commit -m "$1"
 fi
