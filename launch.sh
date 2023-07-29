@@ -20,5 +20,5 @@ bspc config bottom_padding 0
 # Auto-hide
 for id in $(xdotool search --class polybar); do
 	# ~/scripts/hideIt.sh --id $id --peek 3 --hover -d bottom --no-trans &
-	~/scripts/hideIt.sh --id $id --peek 3 --hover -d bottom --steps 5 &
+	~/scripts/hideIt.sh --id $id --peek 3 --hover -d bottom --steps 8 &
 done
