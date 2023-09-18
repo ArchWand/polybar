@@ -10,6 +10,7 @@ while pgrep -u $UID -x polybar; do; done
 for m in $(polybar --list-monitors | cut -d":" -f1); do
     MONITOR=$m polybar --reload main &
 done
+bspc config bottom_padding 0
 
 pkill -15 -f "bash $HOME/scripts/hideIt.sh"
 # Wait for polybars to populate
