@@ -1,4 +1,5 @@
 #!/usr/bin/zsh
+HIDEIT='scripts/hideIt.sh'
 
 # Terminate already running bar instances
 pkill -9 polybar
@@ -12,7 +13,7 @@ for m in $(polybar --list-monitors | cut -d":" -f1); do
 done
 bspc config bottom_padding 0
 
-pkill -15 -f "bash $HOME/scripts/hideIt.sh"
+pkill -15 -f "bash $HIDEIT"
 # Wait for polybars to populate
 while [[ "$(xdotool search --class polybar | wc -w)" -lt "$(polybar --list-monitors | wc -l)" ]]; do
 done
@@ -20,6 +21,6 @@ bspc config bottom_padding 0
 
 # Auto-hide
 for id in $(xdotool search --class polybar); do
-	# ~/scripts/hideIt.sh --id $id --peek 3 --hover -d bottom --no-trans &
-	~/scripts/hideIt.sh --id $id --peek 3 --hover -d bottom --steps 8 &
+	# $HIDEIT --id $id --peek 3 --hover -d bottom --no-trans &
+	$HIDEIT --id $id --peek 3 --hover -d bottom --steps 8 &
 done
