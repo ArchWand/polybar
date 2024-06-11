@@ -43,6 +43,7 @@ HIDE=1
 TOGGLE=1
 OVERRIDE=1
 TOGGLE_PEEK=1
+COOLDOWN=0
 
 _DOES_PEEK=0
 _HAS_REGION=1
@@ -137,10 +138,13 @@ usage() {
     printf " --toggle-override\n"
     printf "   Force the window to ignore any further signals, maintaining its\n"
     printf "   current visibility, until --toggle-override is used again.\n"
-    printf "\n\n"
+    printf "\n"
     printf " -P, --toggle-peek\n"
     printf "   Send a SIGUSR2 signal to the process matching the same window.\n"
     printf "   This will toggle the hidden state of the window if --peek is greater 0."
+    printf "\n"
+    printf " --cooldown\n"
+    printf "   Add a cooldown to prevent flickering."
     printf "\n\n"
     printf "Examples:\n"
     printf "  Dropdown Terminal:\n"
@@ -276,6 +280,10 @@ argparse() {
             ;;
         "-P"|"--toggle-peek")
             TOGGLE_PEEK=0
+            ;;
+        "--cooldown")
+            COOLDOWN="$2"
+            shift
             ;;
         "-h"|"--help")
             usage
@@ -531,6 +539,9 @@ function hide_window() {
         eval $(xdotool getmouselocation --shell)
         xdotool windowactivate $WINDOW > /dev/null 2>&1
     fi
+
+    # Cooldown to prevent flickering
+    sleep $COOLDOWN
 }
 
 
