@@ -54,11 +54,11 @@ _PID_FILE=""
 # solve scope issues
 _IS_HIDDEN_FILE=""
 function is_hidden() {
-	if [ $# -eq 0 ]; then
-		echo $(cat "$_IS_HIDDEN_FILE")
-	else
-		echo $1 > "$_IS_HIDDEN_FILE"
-	fi
+    if [ $# -eq 0 ]; then
+        echo $(cat "$_IS_HIDDEN_FILE")
+    else
+        echo $1 > "$_IS_HIDDEN_FILE"
+    fi
 }
 
 usage() {
@@ -117,9 +117,9 @@ usage() {
     printf "   steps in pixel used to move the window. The higher the value,\n"
     printf "   the faster it will move at the cost of smoothness.\n"
     printf "   Defaults to 3.\n"
-	printf "\n"
-	printf "--focus"
-	printf "   Focus the window under the mouse after hiding.\n"
+    printf "\n"
+    printf "--focus"
+    printf "   Focus the window under the mouse after hiding.\n"
     printf "\n"
     printf " -T, --no-trans\n"
     printf "   Turn of the transition effect.\n"
@@ -161,131 +161,131 @@ argparse() {
 
     while [ $# -gt 0 ]; do
         case $1 in
-            "-N"|"--name")
-                WIN_NAME="$2"
-                shift
-                ;;
-            "-C"|"--class")
-                WIN_CLASS="$2"
-                shift
-                ;;
-            "-I"|"--instance")
-                WIN_INSTANCE="$2"
-                shift
-                ;;
-            "--id")
-                if [[ ! $2 =~ [0-9]+ ]]; then
-                    printf "Invalid window id. Should be a number.\n" 1>&2
-                    exit 1
-                fi
-
-                WIN_ID="$2"
-                shift
-                ;;
-            "-w"|"--wait")
-                WAIT=0
-                ;;
-            "-H"|"--hover")
-                HOVER=0
-                ;;
-            "-S"|"--signal")
-                SIGNAL=0
-                ;;
-            "-r"|"--region")
-                local posX posY offsetX offsetY
-                read posX posY offsetX offsetY <<<$(echo "$2" | \
-                    sed -rn 's/^([0-9]+)x([0-9]+)\+(-?[0-9]+)\+(-?[0-9]+)/\1 \2 \3 \4/p')
-
-                # Test if we have proper values by trying
-                # to add them all together
-                expr $posX + $posY + $offsetX + $offsetY > /dev/null 2>&1
-                if [ $? -ne 0 ]; then
-                    printf "Invalid region. See --help for usage.\n" 1>&2
-                    exit 1
-                fi
-
-                MINX=$posX
-                MAXX=$((${MINX} + ${offsetX}))
-                if [ $MINX -gt $MAXX ]; then
-                    read MINX MAXX <<< "$MAXX $MINX"
-                fi
-
-                MINY=$posY
-                MAXY=$((${MINY} + ${offsetY}))
-                if [ $MINY -gt $MAXY ]; then
-                    read MINY MAXY <<< "$MAXY $MINY"
-                fi
-
-                if [[ ! $MINX =~ [0-9]+ ]] || [[ ! $MINY =~ [0-9]+ ]] \
-                        || [[ ! $MAXY =~ [0-9]+ ]] || [[ ! $MAXY =~ [0-9]+ ]]; then
-                    printf "Missing or invalid region. See --help for usage.\n" 1>&2
-                    exit 1
-                fi
-                _HAS_REGION=0
-                shift
-                ;;
-            "-i"|"--interval")
-                INTERVAL="$2"
-                if [[ ! $INTERVAL =~ [0-9]+ ]]; then
-                    printf "Interval should be a number. " 1>&2
-                    exit 1
-                fi
-                shift
-                ;;
-            "-p"|"--peek")
-                PEEK="$2"
-                if [[ ! $PEEK =~ [0-9]+ ]]; then
-                    printf "Peek should be a number. " 1>&2
-                    exit 1
-                fi
-                shift
-                ;;
-            "-d"|"--direction")
-                DIRECTION="$2"
-                if [[ ! "$DIRECTION" =~ ^(left|right|top|bottom)$ ]]; then
-                    printf "Invalid direction. See --help for usage.\n" 1>&2
-                    exit 1
-                fi
-                shift
-                ;;
-            "-s"|"--steps")
-                STEPS="$2"
-                if [[ ! $STEPS =~ [0-9]+ ]]; then
-                    printf "Steps should be a number. " 1>&2
-                    exit 1
-                fi
-                shift
-                ;;
-			"-f"|"--focus")
-				FOCUS=0
-				;;
-            "-T"|"--no-trans")
-                NO_TRANS=0
-                ;;
-			"--show")
-				SHOW=0
-				;;
-			"--hide")
-				HIDE=0
-				;;
-            "-t"|"--toggle")
-                TOGGLE=0
-                ;;
-			"--toggle-override")
-				OVERRIDE=0
-				;;
-            "-P"|"--toggle-peek")
-                TOGGLE_PEEK=0
-                ;;
-            "-h"|"--help")
-                usage
-                exit 0
-                ;;
-            **)
-                printf "Didn't understand '$1'\n" 1>&2
-                printf "See --help for usage.\n"
+        "-N"|"--name")
+            WIN_NAME="$2"
+            shift
+            ;;
+        "-C"|"--class")
+            WIN_CLASS="$2"
+            shift
+            ;;
+        "-I"|"--instance")
+            WIN_INSTANCE="$2"
+            shift
+            ;;
+        "--id")
+            if [[ ! $2 =~ [0-9]+ ]]; then
+                printf "Invalid window id. Should be a number.\n" 1>&2
                 exit 1
-                ;;
+            fi
+
+            WIN_ID="$2"
+            shift
+            ;;
+        "-w"|"--wait")
+            WAIT=0
+            ;;
+        "-H"|"--hover")
+            HOVER=0
+            ;;
+        "-S"|"--signal")
+            SIGNAL=0
+            ;;
+        "-r"|"--region")
+            local posX posY offsetX offsetY
+            read posX posY offsetX offsetY <<<$(echo "$2" | \
+                sed -rn 's/^([0-9]+)x([0-9]+)\+(-?[0-9]+)\+(-?[0-9]+)/\1 \2 \3 \4/p')
+
+            # Test if we have proper values by trying
+            # to add them all together
+            expr $posX + $posY + $offsetX + $offsetY > /dev/null 2>&1
+            if [ $? -ne 0 ]; then
+                printf "Invalid region. See --help for usage.\n" 1>&2
+                exit 1
+            fi
+
+            MINX=$posX
+            MAXX=$((${MINX} + ${offsetX}))
+            if [ $MINX -gt $MAXX ]; then
+                read MINX MAXX <<< "$MAXX $MINX"
+            fi
+
+            MINY=$posY
+            MAXY=$((${MINY} + ${offsetY}))
+            if [ $MINY -gt $MAXY ]; then
+                read MINY MAXY <<< "$MAXY $MINY"
+            fi
+
+            if [[ ! $MINX =~ [0-9]+ ]] || [[ ! $MINY =~ [0-9]+ ]] \
+                || [[ ! $MAXY =~ [0-9]+ ]] || [[ ! $MAXY =~ [0-9]+ ]]; then
+                                printf "Missing or invalid region. See --help for usage.\n" 1>&2
+                                exit 1
+            fi
+            _HAS_REGION=0
+            shift
+            ;;
+        "-i"|"--interval")
+            INTERVAL="$2"
+            if [[ ! $INTERVAL =~ [0-9]+ ]]; then
+                printf "Interval should be a number. " 1>&2
+                exit 1
+            fi
+            shift
+            ;;
+        "-p"|"--peek")
+            PEEK="$2"
+            if [[ ! $PEEK =~ [0-9]+ ]]; then
+                printf "Peek should be a number. " 1>&2
+                exit 1
+            fi
+            shift
+            ;;
+        "-d"|"--direction")
+            DIRECTION="$2"
+            if [[ ! "$DIRECTION" =~ ^(left|right|top|bottom)$ ]]; then
+                printf "Invalid direction. See --help for usage.\n" 1>&2
+                exit 1
+            fi
+            shift
+            ;;
+        "-s"|"--steps")
+            STEPS="$2"
+            if [[ ! $STEPS =~ [0-9]+ ]]; then
+                printf "Steps should be a number. " 1>&2
+                exit 1
+            fi
+            shift
+            ;;
+        "-f"|"--focus")
+            FOCUS=0
+            ;;
+        "-T"|"--no-trans")
+            NO_TRANS=0
+            ;;
+        "--show")
+            SHOW=0
+            ;;
+        "--hide")
+            HIDE=0
+            ;;
+        "-t"|"--toggle")
+            TOGGLE=0
+            ;;
+        "--toggle-override")
+            OVERRIDE=0
+            ;;
+        "-P"|"--toggle-peek")
+            TOGGLE_PEEK=0
+            ;;
+        "-h"|"--help")
+            usage
+            exit 0
+            ;;
+        **)
+            printf "Didn't understand '$1'\n" 1>&2
+            printf "See --help for usage.\n"
+            exit 1
+            ;;
         esac
         shift
     done
@@ -299,10 +299,10 @@ argparse() {
     fi
 
     if [ $SHOW -ne 0 ] && [ $HIDE -ne 0 ] && [ $TOGGLE -ne 0 ] && [ $TOGGLE_PEEK -ne 0 ] && [ $SIGNAL -ne 0 ] \
-            && [ $_HAS_REGION -ne 0 ] && [ $HOVER -ne 0 ] && [ $OVERRIDE -ne 0 ]; then
-        printf "At least one of --show, --hide, --toggle, --signal, --hover," 1>&2
-        printf " --region, or --toggle-override is required!\n" 1>&2
-        exit 1
+        && [ $_HAS_REGION -ne 0 ] && [ $HOVER -ne 0 ] && [ $OVERRIDE -ne 0 ]; then
+            printf "At least one of --show, --hide, --toggle, --signal, --hover," 1>&2
+            printf " --region, or --toggle-override is required!\n" 1>&2
+            exit 1
     fi
 }
 
@@ -452,7 +452,7 @@ function hide_window() {
         exit 0
     fi
 
-	is_hidden $hide
+    is_hidden $hide
 
     # Update WIN_WIDTH, WIN_HEIGHT in case they changed
     fetch_window_dimensions
@@ -537,11 +537,11 @@ function hide_window() {
 function toggle() {
     # Toggle the hidden state of the window
 
-	# Ignore if overriden
-	if [ $(is_hidden) -gt 1 ]; then
-		return
-	fi
-	if [ $(is_hidden) -eq 0 ]; then
+    # Ignore if overriden
+    if [ $(is_hidden) -gt 1 ]; then
+        return
+    fi
+    if [ $(is_hidden) -eq 0 ]; then
         hide_window 1
     else
         hide_window 0
@@ -586,21 +586,21 @@ function serve_region() {
 
             # Test if the cursor is within the region
             if [ $X -ge $MINX -a $X -le $MAXX ] \
-                    && [ $Y -ge $MINY -a $Y -le $MAXY ]; then
-                _hide=1
-            else
-                _hide=0
+                && [ $Y -ge $MINY -a $Y -le $MAXY ]; then
+                            _hide=1
+                        else
+                            _hide=0
             fi
 
             # Don't hide if the cursor is still above the window
-			if [ $(is_hidden) -ne 0 ] \
-                    && [ $_hide -eq 0 ] \
-                    && [ $WINDOW -eq $WIN_ID ]; then
-                _hide=1
+            if [ $(is_hidden) -ne 0 ] \
+                && [ $_hide -eq 0 ] \
+                && [ $WINDOW -eq $WIN_ID ]; then
+                            _hide=1
             fi
 
             # Only do something if necessary
-			if [ $(is_hidden) -ne $_hide ]; then
+            if [ $(is_hidden) -ne $_hide ]; then
                 hide_window $_hide
             fi
         fi
@@ -616,14 +616,14 @@ function serve_xev() {
     # xev and act accordingly
 
     xev -id $WIN_ID -event mouse | while read line; do
-        if [[ "$line" =~ ^EnterNotify.* ]] &&\
-			[ $(is_hidden) -eq 0 ] && [ $(is_hidden) -lt 2 ]; then
-				hide_window 1
-		elif [[ "$line" =~ ^LeaveNotify.* ]] &&\
-			[ $(is_hidden) -eq 1 ] && [ $(is_hidden) -lt 2 ]; then
-				hide_window 0
-        fi
-    done
+    if [[ "$line" =~ ^EnterNotify.* ]] &&\
+        [ $(is_hidden) -eq 0 ] && [ $(is_hidden) -lt 2 ]; then
+            hide_window 1
+    elif [[ "$line" =~ ^LeaveNotify.* ]] &&\
+        [ $(is_hidden) -eq 1 ] && [ $(is_hidden) -lt 2 ]; then
+            hide_window 0
+    fi
+done
 }
 
 
@@ -638,12 +638,12 @@ function restore() {
         rm "$_PID_FILE"
     fi
 
-	if [ -f "$_IS_HIDDEN_FILE" ]; then
-		rm "$_IS_HIDDEN_FILE"
-	fi
+    if [ -f "$_IS_HIDDEN_FILE" ]; then
+        rm "$_IS_HIDDEN_FILE"
+    fi
 
-	notify-send $(is_hidden)
-	if [ $(is_hidden) -eq 0 ]; then
+    notify-send $(is_hidden)
+    if [ $(is_hidden) -eq 0 ]; then
         printf "Restoring original window position...\n"
         hide_window 1
     fi
@@ -679,29 +679,29 @@ function main() {
         printf "Found window with id: $WIN_ID\n"
     fi
 
-	_IS_HIDDEN_FILE="/tmp/hideIt-${WIN_ID}-hidden"
+    _IS_HIDDEN_FILE="/tmp/hideIt-${WIN_ID}-hidden"
 
-	# Set the state file appropriately for --show or --hide
-	if [ $SHOW -eq 0 ]; then
-		if [ $(is_hidden) -ne 0 ]; then
-			exit 0
-		fi
-		is_hidden 0
-	elif [ $HIDE -eq 0 ]; then
-		if [ $(is_hidden) -ne 1 ]; then
-			exit 0
-		fi
-		is_hidden 1
-	fi
+    # Set the state file appropriately for --show or --hide
+    if [ $SHOW -eq 0 ]; then
+        if [ $(is_hidden) -ne 0 ]; then
+            exit 0
+        fi
+        is_hidden 0
+    elif [ $HIDE -eq 0 ]; then
+        if [ $(is_hidden) -ne 1 ]; then
+            exit 0
+        fi
+        is_hidden 1
+    fi
     if [ $TOGGLE -eq 0 ] || [ $SHOW -eq 0 ] || [ $HIDE -eq 0 ]; then
         send_signal SIGUSR1
         exit 0
     fi
 
-	if [ $OVERRIDE -eq 0 ]; then
-		is_hidden $(( ($(is_hidden) + 2) % 4))
-		exit 0
-	fi
+    if [ $OVERRIDE -eq 0 ]; then
+        is_hidden $(( ($(is_hidden) + 2) % 4))
+        exit 0
+    fi
 
     if [ $TOGGLE_PEEK -eq 0 ]; then
         send_signal SIGUSR2
@@ -750,7 +750,7 @@ function main() {
     if [ -n "$_WAIT_PID" ]; then
         while true; do
             wait "$_WAIT_PID"
-			printf "Received signal...\n"
+            printf "Received signal...\n"
         done
     fi
 }
